@@ -6,13 +6,10 @@ import gc
 import os
 import sys
 import json
-import time
 import asyncio
 import inspect
-import subprocess
 import tracemalloc
 from typing import Any, Union, cast
-from textwrap import dedent
 from unittest import mock
 from typing_extensions import Literal
 
@@ -23,14 +20,17 @@ from pydantic import ValidationError
 
 from hbs import Hbs, AsyncHbs, APIResponseValidationError
 from hbs._types import Omit
+from hbs._utils import asyncify
 from hbs._models import BaseModel, FinalRequestOptions
 from hbs._exceptions import APIStatusError, APITimeoutError, APIResponseValidationError
 from hbs._base_client import (
     DEFAULT_TIMEOUT,
     HTTPX_DEFAULT_TIMEOUT,
     BaseClient,
+    OtherPlatform,
     DefaultHttpxClient,
     DefaultAsyncHttpxClient,
+    get_platform,
     make_request_options,
 )
 
@@ -325,6 +325,25 @@ class TestHbs:
         request = client2._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-foo") == "stainless"
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
+
+    def test_validate_headers(self) -> None:
+        client = Hbs(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
+        assert request.headers.get("private-app-legacy") == api_key
+
+        with update_env(**{"HBS_API_KEY": Omit()}):
+            client2 = Hbs(base_url=base_url, api_key=None, _strict_response_validation=True)
+
+        with pytest.raises(
+            TypeError,
+            match="Could not resolve authentication method. Expected the api_key to be set. Or for the `private-app-legacy` headers to be explicitly omitted",
+        ):
+            client2._build_request(FinalRequestOptions(method="get", url="/foo"))
+
+        request2 = client2._build_request(
+            FinalRequestOptions(method="get", url="/foo", headers={"private-app-legacy": Omit()})
+        )
+        assert request2.headers.get("private-app-legacy") is None
 
     def test_default_query_option(self) -> None:
         client = Hbs(
@@ -1119,6 +1138,25 @@ class TestAsyncHbs:
         assert request.headers.get("x-foo") == "stainless"
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
 
+    def test_validate_headers(self) -> None:
+        client = AsyncHbs(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
+        assert request.headers.get("private-app-legacy") == api_key
+
+        with update_env(**{"HBS_API_KEY": Omit()}):
+            client2 = AsyncHbs(base_url=base_url, api_key=None, _strict_response_validation=True)
+
+        with pytest.raises(
+            TypeError,
+            match="Could not resolve authentication method. Expected the api_key to be set. Or for the `private-app-legacy` headers to be explicitly omitted",
+        ):
+            client2._build_request(FinalRequestOptions(method="get", url="/foo"))
+
+        request2 = client2._build_request(
+            FinalRequestOptions(method="get", url="/foo", headers={"private-app-legacy": Omit()})
+        )
+        assert request2.headers.get("private-app-legacy") is None
+
     def test_default_query_option(self) -> None:
         client = AsyncHbs(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, default_query={"query_param": "bar"}
@@ -1591,50 +1629,9 @@ class TestAsyncHbs:
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
 
-    def test_get_platform(self) -> None:
-        # A previous implementation of asyncify could leave threads unterminated when
-        # used with nest_asyncio.
-        #
-        # Since nest_asyncio.apply() is global and cannot be un-applied, this
-        # test is run in a separate process to avoid affecting other tests.
-        test_code = dedent("""
-        import asyncio
-        import nest_asyncio
-        import threading
-
-        from hbs._utils import asyncify
-        from hbs._base_client import get_platform
-
-        async def test_main() -> None:
-            result = await asyncify(get_platform)()
-            print(result)
-            for thread in threading.enumerate():
-                print(thread.name)
-
-        nest_asyncio.apply()
-        asyncio.run(test_main())
-        """)
-        with subprocess.Popen(
-            [sys.executable, "-c", test_code],
-            text=True,
-        ) as process:
-            timeout = 10  # seconds
-
-            start_time = time.monotonic()
-            while True:
-                return_code = process.poll()
-                if return_code is not None:
-                    if return_code != 0:
-                        raise AssertionError("calling get_platform using asyncify resulted in a non-zero exit code")
-
-                    # success
-                    break
-
-                if time.monotonic() - start_time > timeout:
-                    process.kill()
-                    raise AssertionError("calling get_platform using asyncify resulted in a hung process")
-
-                time.sleep(0.1)
+    async def test_get_platform(self) -> None:
+        platform = await asyncify(get_platform)()
+        assert isinstance(platform, (str, OtherPlatform))
 
     async def test_proxy_environment_variables(self, monkeypatch: pytest.MonkeyPatch) -> None:
         # Test that the proxy environment variables are set correctly

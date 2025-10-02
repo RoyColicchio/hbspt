@@ -22,13 +22,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestActivity:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_get_audit_logs(self, client: Hbs) -> None:
         activity = client.account_info.v3.activity.get_audit_logs()
         assert_matches_type(ActivityGetAuditLogsResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_get_audit_logs_with_all_params(self, client: Hbs) -> None:
         activity = client.account_info.v3.activity.get_audit_logs(
@@ -41,7 +41,7 @@ class TestActivity:
         )
         assert_matches_type(ActivityGetAuditLogsResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_raw_response_get_audit_logs(self, client: Hbs) -> None:
         response = client.account_info.v3.activity.with_raw_response.get_audit_logs()
@@ -51,7 +51,7 @@ class TestActivity:
         activity = response.parse()
         assert_matches_type(ActivityGetAuditLogsResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_streaming_response_get_audit_logs(self, client: Hbs) -> None:
         with client.account_info.v3.activity.with_streaming_response.get_audit_logs() as response:
@@ -63,13 +63,13 @@ class TestActivity:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_get_login_activity(self, client: Hbs) -> None:
         activity = client.account_info.v3.activity.get_login_activity()
         assert_matches_type(ActivityGetLoginActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_get_login_activity_with_all_params(self, client: Hbs) -> None:
         activity = client.account_info.v3.activity.get_login_activity(
@@ -79,7 +79,7 @@ class TestActivity:
         )
         assert_matches_type(ActivityGetLoginActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_raw_response_get_login_activity(self, client: Hbs) -> None:
         response = client.account_info.v3.activity.with_raw_response.get_login_activity()
@@ -89,7 +89,7 @@ class TestActivity:
         activity = response.parse()
         assert_matches_type(ActivityGetLoginActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_streaming_response_get_login_activity(self, client: Hbs) -> None:
         with client.account_info.v3.activity.with_streaming_response.get_login_activity() as response:
@@ -101,13 +101,13 @@ class TestActivity:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_get_security_activity(self, client: Hbs) -> None:
         activity = client.account_info.v3.activity.get_security_activity()
         assert_matches_type(ActivityGetSecurityActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_get_security_activity_with_all_params(self, client: Hbs) -> None:
         activity = client.account_info.v3.activity.get_security_activity(
@@ -118,7 +118,7 @@ class TestActivity:
         )
         assert_matches_type(ActivityGetSecurityActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_raw_response_get_security_activity(self, client: Hbs) -> None:
         response = client.account_info.v3.activity.with_raw_response.get_security_activity()
@@ -128,7 +128,7 @@ class TestActivity:
         activity = response.parse()
         assert_matches_type(ActivityGetSecurityActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_streaming_response_get_security_activity(self, client: Hbs) -> None:
         with client.account_info.v3.activity.with_streaming_response.get_security_activity() as response:
@@ -146,13 +146,13 @@ class TestAsyncActivity:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_get_audit_logs(self, async_client: AsyncHbs) -> None:
         activity = await async_client.account_info.v3.activity.get_audit_logs()
         assert_matches_type(ActivityGetAuditLogsResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_get_audit_logs_with_all_params(self, async_client: AsyncHbs) -> None:
         activity = await async_client.account_info.v3.activity.get_audit_logs(
@@ -165,7 +165,7 @@ class TestAsyncActivity:
         )
         assert_matches_type(ActivityGetAuditLogsResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_raw_response_get_audit_logs(self, async_client: AsyncHbs) -> None:
         response = await async_client.account_info.v3.activity.with_raw_response.get_audit_logs()
@@ -175,7 +175,7 @@ class TestAsyncActivity:
         activity = await response.parse()
         assert_matches_type(ActivityGetAuditLogsResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_streaming_response_get_audit_logs(self, async_client: AsyncHbs) -> None:
         async with async_client.account_info.v3.activity.with_streaming_response.get_audit_logs() as response:
@@ -187,13 +187,13 @@ class TestAsyncActivity:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_get_login_activity(self, async_client: AsyncHbs) -> None:
         activity = await async_client.account_info.v3.activity.get_login_activity()
         assert_matches_type(ActivityGetLoginActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_get_login_activity_with_all_params(self, async_client: AsyncHbs) -> None:
         activity = await async_client.account_info.v3.activity.get_login_activity(
@@ -203,7 +203,7 @@ class TestAsyncActivity:
         )
         assert_matches_type(ActivityGetLoginActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_raw_response_get_login_activity(self, async_client: AsyncHbs) -> None:
         response = await async_client.account_info.v3.activity.with_raw_response.get_login_activity()
@@ -213,7 +213,7 @@ class TestAsyncActivity:
         activity = await response.parse()
         assert_matches_type(ActivityGetLoginActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_streaming_response_get_login_activity(self, async_client: AsyncHbs) -> None:
         async with async_client.account_info.v3.activity.with_streaming_response.get_login_activity() as response:
@@ -225,13 +225,13 @@ class TestAsyncActivity:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_get_security_activity(self, async_client: AsyncHbs) -> None:
         activity = await async_client.account_info.v3.activity.get_security_activity()
         assert_matches_type(ActivityGetSecurityActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_get_security_activity_with_all_params(self, async_client: AsyncHbs) -> None:
         activity = await async_client.account_info.v3.activity.get_security_activity(
@@ -242,7 +242,7 @@ class TestAsyncActivity:
         )
         assert_matches_type(ActivityGetSecurityActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_raw_response_get_security_activity(self, async_client: AsyncHbs) -> None:
         response = await async_client.account_info.v3.activity.with_raw_response.get_security_activity()
@@ -252,7 +252,7 @@ class TestAsyncActivity:
         activity = await response.parse()
         assert_matches_type(ActivityGetSecurityActivityResponse, activity, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_streaming_response_get_security_activity(self, async_client: AsyncHbs) -> None:
         async with async_client.account_info.v3.activity.with_streaming_response.get_security_activity() as response:

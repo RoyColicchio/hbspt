@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from typing import List, Union, Iterable
+from typing import Union, Iterable
 from datetime import datetime
 
 import httpx
 
-from ...._types import NOT_GIVEN, Body, Query, Headers, NotGiven
+from ...._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
 from ...._utils import maybe_transform, async_maybe_transform
 from ...._compat import cached_property
 from ...._resource import SyncAPIResource, AsyncAPIResource
@@ -37,7 +37,7 @@ class ActivityResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/hbs-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/RoyColicchio/hbspt#accessing-raw-response-data-eg-headers
         """
         return ActivityResourceWithRawResponse(self)
 
@@ -46,25 +46,25 @@ class ActivityResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/hbs-python#with_streaming_response
+        For more information, see https://www.github.com/RoyColicchio/hbspt#with_streaming_response
         """
         return ActivityResourceWithStreamingResponse(self)
 
     def get_audit_logs(
         self,
         *,
-        acting_user_id: Iterable[int] | NotGiven = NOT_GIVEN,
-        after: str | NotGiven = NOT_GIVEN,
-        limit: int | NotGiven = NOT_GIVEN,
-        occurred_after: Union[str, datetime] | NotGiven = NOT_GIVEN,
-        occurred_before: Union[str, datetime] | NotGiven = NOT_GIVEN,
-        sort: List[str] | NotGiven = NOT_GIVEN,
+        acting_user_id: Iterable[int] | Omit = omit,
+        after: str | Omit = omit,
+        limit: int | Omit = omit,
+        occurred_after: Union[str, datetime] | Omit = omit,
+        occurred_before: Union[str, datetime] | Omit = omit,
+        sort: SequenceNotStr[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ActivityGetAuditLogsResponse:
         """
         Args:
@@ -107,15 +107,15 @@ class ActivityResource(SyncAPIResource):
     def get_login_activity(
         self,
         *,
-        after: str | NotGiven = NOT_GIVEN,
-        limit: int | NotGiven = NOT_GIVEN,
-        user_id: int | NotGiven = NOT_GIVEN,
+        after: str | Omit = omit,
+        limit: int | Omit = omit,
+        user_id: int | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ActivityGetLoginActivityResponse:
         """
         Get login activity.
@@ -158,16 +158,16 @@ class ActivityResource(SyncAPIResource):
     def get_security_activity(
         self,
         *,
-        after: str | NotGiven = NOT_GIVEN,
-        from_timestamp: int | NotGiven = NOT_GIVEN,
-        limit: int | NotGiven = NOT_GIVEN,
-        user_id: int | NotGiven = NOT_GIVEN,
+        after: str | Omit = omit,
+        from_timestamp: int | Omit = omit,
+        limit: int | Omit = omit,
+        user_id: int | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ActivityGetSecurityActivityResponse:
         """
         Get security activity
@@ -218,7 +218,7 @@ class AsyncActivityResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/hbs-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/RoyColicchio/hbspt#accessing-raw-response-data-eg-headers
         """
         return AsyncActivityResourceWithRawResponse(self)
 
@@ -227,25 +227,25 @@ class AsyncActivityResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/hbs-python#with_streaming_response
+        For more information, see https://www.github.com/RoyColicchio/hbspt#with_streaming_response
         """
         return AsyncActivityResourceWithStreamingResponse(self)
 
     async def get_audit_logs(
         self,
         *,
-        acting_user_id: Iterable[int] | NotGiven = NOT_GIVEN,
-        after: str | NotGiven = NOT_GIVEN,
-        limit: int | NotGiven = NOT_GIVEN,
-        occurred_after: Union[str, datetime] | NotGiven = NOT_GIVEN,
-        occurred_before: Union[str, datetime] | NotGiven = NOT_GIVEN,
-        sort: List[str] | NotGiven = NOT_GIVEN,
+        acting_user_id: Iterable[int] | Omit = omit,
+        after: str | Omit = omit,
+        limit: int | Omit = omit,
+        occurred_after: Union[str, datetime] | Omit = omit,
+        occurred_before: Union[str, datetime] | Omit = omit,
+        sort: SequenceNotStr[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ActivityGetAuditLogsResponse:
         """
         Args:
@@ -288,15 +288,15 @@ class AsyncActivityResource(AsyncAPIResource):
     async def get_login_activity(
         self,
         *,
-        after: str | NotGiven = NOT_GIVEN,
-        limit: int | NotGiven = NOT_GIVEN,
-        user_id: int | NotGiven = NOT_GIVEN,
+        after: str | Omit = omit,
+        limit: int | Omit = omit,
+        user_id: int | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ActivityGetLoginActivityResponse:
         """
         Get login activity.
@@ -339,16 +339,16 @@ class AsyncActivityResource(AsyncAPIResource):
     async def get_security_activity(
         self,
         *,
-        after: str | NotGiven = NOT_GIVEN,
-        from_timestamp: int | NotGiven = NOT_GIVEN,
-        limit: int | NotGiven = NOT_GIVEN,
-        user_id: int | NotGiven = NOT_GIVEN,
+        after: str | Omit = omit,
+        from_timestamp: int | Omit = omit,
+        limit: int | Omit = omit,
+        user_id: int | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ActivityGetSecurityActivityResponse:
         """
         Get security activity

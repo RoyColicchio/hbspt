@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from typing import List, Union, Iterable
+from typing import Union, Iterable
 from datetime import datetime
 from typing_extensions import Annotated, TypedDict
 
+from ...._types import SequenceNotStr
 from ...._utils import PropertyInfo
 
 __all__ = ["ActivityGetAuditLogsParams"]
@@ -28,4 +29,4 @@ class ActivityGetAuditLogsParams(TypedDict, total=False):
 
     occurred_before: Annotated[Union[str, datetime], PropertyInfo(alias="occurredBefore", format="iso8601")]
 
-    sort: List[str]
+    sort: SequenceNotStr[str]

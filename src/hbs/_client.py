@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Union, Mapping
+from typing import Any, Mapping
 from typing_extensions import Self, override
 
 import httpx
@@ -11,16 +11,16 @@ import httpx
 from . import _exceptions
 from ._qs import Querystring
 from ._types import (
-    NOT_GIVEN,
     Omit,
+    Headers,
     Timeout,
     NotGiven,
     Transport,
     ProxiesTypes,
     RequestOptions,
+    not_given,
 )
 from ._utils import is_given, get_async_library
-from ._oauth2 import OAuth2ClientCredentials
 from ._version import __version__
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import APIStatusError
@@ -47,7 +47,7 @@ class Hbs(SyncAPIClient):
         *,
         api_key: str | None = None,
         base_url: str | httpx.URL | None = None,
-        timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
+        timeout: float | Timeout | None | NotGiven = not_given,
         max_retries: int = DEFAULT_MAX_RETRIES,
         default_headers: Mapping[str, str] | None = None,
         default_query: Mapping[str, object] | None = None,
@@ -108,11 +108,6 @@ class Hbs(SyncAPIClient):
 
     @property
     @override
-    def custom_auth(self) -> httpx.Auth | None:
-        raise NotImplementedError("This auth method has not been implemented yet.")
-
-    @property
-    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
@@ -121,22 +116,24 @@ class Hbs(SyncAPIClient):
         }
 
     @override
-    def _should_retry(self, response: httpx.Response) -> bool:
-        # Retry on 401 if we are using OAuth2 and the token might be expired
-        if response.status_code == 401 and isinstance(self.custom_auth, OAuth2ClientCredentials):
-            if self.custom_auth.token_is_expired():
-                self.custom_auth.invalidate_token()
-                return True
-        return super()._should_retry(response)
+    def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
+        if self.api_key and headers.get("private-app-legacy"):
+            return
+        if isinstance(custom_headers.get("private-app-legacy"), Omit):
+            return
+
+        raise TypeError(
+            '"Could not resolve authentication method. Expected the api_key to be set. Or for the `private-app-legacy` headers to be explicitly omitted"'
+        )
 
     def copy(
         self,
         *,
         api_key: str | None = None,
         base_url: str | httpx.URL | None = None,
-        timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
+        timeout: float | Timeout | None | NotGiven = not_given,
         http_client: httpx.Client | None = None,
-        max_retries: int | NotGiven = NOT_GIVEN,
+        max_retries: int | NotGiven = not_given,
         default_headers: Mapping[str, str] | None = None,
         set_default_headers: Mapping[str, str] | None = None,
         default_query: Mapping[str, object] | None = None,
@@ -227,7 +224,7 @@ class AsyncHbs(AsyncAPIClient):
         *,
         api_key: str | None = None,
         base_url: str | httpx.URL | None = None,
-        timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
+        timeout: float | Timeout | None | NotGiven = not_given,
         max_retries: int = DEFAULT_MAX_RETRIES,
         default_headers: Mapping[str, str] | None = None,
         default_query: Mapping[str, object] | None = None,
@@ -288,11 +285,6 @@ class AsyncHbs(AsyncAPIClient):
 
     @property
     @override
-    def custom_auth(self) -> httpx.Auth | None:
-        raise NotImplementedError("This auth method has not been implemented yet.")
-
-    @property
-    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
@@ -301,22 +293,24 @@ class AsyncHbs(AsyncAPIClient):
         }
 
     @override
-    def _should_retry(self, response: httpx.Response) -> bool:
-        # Retry on 401 if we are using OAuth2 and the token might be expired
-        if response.status_code == 401 and isinstance(self.custom_auth, OAuth2ClientCredentials):
-            if self.custom_auth.token_is_expired():
-                self.custom_auth.invalidate_token()
-                return True
-        return super()._should_retry(response)
+    def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
+        if self.api_key and headers.get("private-app-legacy"):
+            return
+        if isinstance(custom_headers.get("private-app-legacy"), Omit):
+            return
+
+        raise TypeError(
+            '"Could not resolve authentication method. Expected the api_key to be set. Or for the `private-app-legacy` headers to be explicitly omitted"'
+        )
 
     def copy(
         self,
         *,
         api_key: str | None = None,
         base_url: str | httpx.URL | None = None,
-        timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
+        timeout: float | Timeout | None | NotGiven = not_given,
         http_client: httpx.AsyncClient | None = None,
-        max_retries: int | NotGiven = NOT_GIVEN,
+        max_retries: int | NotGiven = not_given,
         default_headers: Mapping[str, str] | None = None,
         set_default_headers: Mapping[str, str] | None = None,
         default_query: Mapping[str, object] | None = None,

@@ -17,13 +17,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestV3:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_get_account_details(self, client: Hbs) -> None:
         v3 = client.account_info.v3.get_account_details()
         assert_matches_type(V3GetAccountDetailsResponse, v3, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_raw_response_get_account_details(self, client: Hbs) -> None:
         response = client.account_info.v3.with_raw_response.get_account_details()
@@ -33,7 +33,7 @@ class TestV3:
         v3 = response.parse()
         assert_matches_type(V3GetAccountDetailsResponse, v3, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_streaming_response_get_account_details(self, client: Hbs) -> None:
         with client.account_info.v3.with_streaming_response.get_account_details() as response:
@@ -51,13 +51,13 @@ class TestAsyncV3:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_get_account_details(self, async_client: AsyncHbs) -> None:
         v3 = await async_client.account_info.v3.get_account_details()
         assert_matches_type(V3GetAccountDetailsResponse, v3, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_raw_response_get_account_details(self, async_client: AsyncHbs) -> None:
         response = await async_client.account_info.v3.with_raw_response.get_account_details()
@@ -67,7 +67,7 @@ class TestAsyncV3:
         v3 = await response.parse()
         assert_matches_type(V3GetAccountDetailsResponse, v3, path=["response"])
 
-    @pytest.mark.skip()
+    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_streaming_response_get_account_details(self, async_client: AsyncHbs) -> None:
         async with async_client.account_info.v3.with_streaming_response.get_account_details() as response:
